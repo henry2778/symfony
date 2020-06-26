@@ -38,9 +38,11 @@ class UniqueValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'array|IteratorAggregate');
         }
 
+        $isInCollection = $constraint->callback;
+
         $collectionElements = [];
         foreach ($value as $element) {
-            if (\in_array($element, $collectionElements, true)) {
+            if ($isInCollection($element, $collectionElements)) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
                     ->setCode(Unique::IS_NOT_UNIQUE)

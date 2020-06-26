@@ -28,4 +28,20 @@ class Unique extends Constraint
     ];
 
     public $message = 'This collection should contain only unique elements.';
+
+    /**
+     * @var string|callable
+     */
+    public $callback;
+
+    public function __construct($options = null)
+    {
+        parent::__construct($options);
+
+        if (null === $this->callback) {
+            $this->callback = function($element, $collectionElements) {
+                return in_array($element, $collectionElements, true);
+            };
+        }
+    }
 }
